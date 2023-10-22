@@ -1,0 +1,32 @@
+cmake_minimum_required(VERSION "3.26")
+
+project(CS202-test)
+
+FILE(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS FOLLOW_SYMLINKS main.cpp src/*.cpp)
+
+set(TARGET_NAME CSG)
+set(CMAKE_EXPORT_COMPILE_COMMANDS OFF)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+
+set(SFML_DIR C:/SFML-2.6.0)
+set(SFML_COMPONENTS graphics window system audio network)
+
+find_package(SFML 2.6 REQUIRED COMPONENTS ${SFML_COMPONENTS})
+include_directories(${SFML_DIR}/lib)
+add_executable(${TARGET_NAME} ${SOURCES})
+target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+foreach(LIB ${SFML_COMPONENTS})
+    target_link_libraries(${TARGET_NAME} PRIVATE sfml-${LIB})
+endforeach()
+
+set_target_properties(${TARGET_NAME} PROPERTIES WIN32_EXECUTABLE ON)
+
+set(BUILD_DIR ${PROJECT_SOURCE_DIR}/build)
+set(DIST_DIR ${BUILD_DIR}/dist)
+set(CMAKE_INSTALL_PREFIX ${DIST_DIR})
+
+install(TARGETS ${TARGET_NAME}
+    BUNDLE DESTINATION .
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)

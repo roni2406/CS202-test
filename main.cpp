@@ -1,6 +1,6 @@
-#include <iostream>
+#include "src/GUI/MyGame/MyGame.h"
 
 int main() {
-    std::cout << "Hello World!" << std::endl;
-    return 0;
+    Game game;
+    game.run();
 }
